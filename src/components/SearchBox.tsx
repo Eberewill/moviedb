@@ -4,7 +4,6 @@ import { Search, ArrowRight, ArrowLeft } from 'tabler-icons-react';
 
 export function SearchBox() {
   const theme = useMantineTheme();
-
   return (
     <TextInput
       icon={<Search size={18} />}

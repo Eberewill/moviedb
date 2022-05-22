@@ -1,7 +1,10 @@
 import React from 'react'
-import { Eye, MessageCircle, Search } from 'tabler-icons-react';
-import { Card, Box, Text, Group, Center, createStyles } from '@mantine/core';
+import { Eye, MessageCircle, Search , ThumbUp , StarHalf, Star} from 'tabler-icons-react';
+import { Card, Box, Text, Group, Center, createStyles, Skeleton } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../state/hooks';
+import { MediaItem } from '../models';
+import { img_300, img_500 } from '../utils';
 
 const useStyles = createStyles((theme, _params, getRef) => {
     const image = getRef('image');
@@ -71,39 +74,38 @@ const useStyles = createStyles((theme, _params, getRef) => {
     };
 });
 
-interface ArticleCardVerticalProps {
-    image: string;
-    category: string;
-    title: string;
-    date: string;
-    author: {
-        name: string;
-        avatar: string;
-    };
-}
 
 function MovieCard({
-    image,
-    category,
+    poster_path ,
+    adult,
+    overview,
+    release_date,
+    genre_ids,
+    id,
+    original_title,
+    original_language,
     title,
-    date,
-    author,
-}: ArticleCardVerticalProps) {
+    backdrop_path,
+    popularity,
+    vote_count,
+    video,
+    vote_average,
+    
+}: MediaItem) {
 
     const { classes, theme } = useStyles();
+    
+  const { isLoading} = useAppSelector((state) => state.media);
 
     const data = {
-        image,
-        category,
-        title,
-        date,
-        author,
+       
     }
 
     return (
         <Box className={classes.cardBox1} p={4}>
             <Link style={{ textDecoration: 'none' }}
                 to={ `/movie`}  state={{ data: data }}>
+                    
                 <Card
                     p="lg"
                     shadow="lg"
@@ -111,7 +113,8 @@ function MovieCard({
                     radius="md"
 
                 >
-                    <div className={classes.image} style={{ backgroundImage: `url(${image})` }} />
+                    <Skeleton  visible={isLoading}> </Skeleton>
+                    <div className={classes.image} style={{ backgroundImage: `url(${img_500 +poster_path})` }} />
                     <div className={classes.overlay} />
 
                     <div className={classes.content}>
@@ -119,29 +122,40 @@ function MovieCard({
                             <Text size="lg" className={classes.title} weight={500}>
                                 {title}
                             </Text>
+                            
+                            <Text size="xs" className={classes.title} weight={500}>
+                                {original_title}
+                            </Text>
 
                             <Group position="apart" spacing="xs">
                                 <Text size="sm" className={classes.author}>
-                                    {author.name}
+                                    {release_date}
                                 </Text>
 
                                 <Group spacing="lg">
-                                    <Center>
-                                        <Eye size={16} color={theme.colors.dark[2]} />
+                                <Center>
+                                        <Star size={16} color={theme.colors.dark[2]} />
                                         <Text size="sm" className={classes.bodyText}>
-                                            {2}
+                                            {popularity}
                                         </Text>
                                     </Center>
                                     <Center>
-                                        <MessageCircle size={16} color={theme.colors.dark[2]} />
+                                        <StarHalf size={16} color={theme.colors.dark[2]} />
                                         <Text size="sm" className={classes.bodyText}>
-                                            {2}
+                                            {vote_average}
+                                        </Text>
+                                    </Center>
+                                    <Center>
+                                        <ThumbUp size={16} color={theme.colors.dark[2]} />
+                                        <Text size="sm" className={classes.bodyText}>
+                                            {vote_count}
                                         </Text>
                                     </Center>
                                 </Group>
                             </Group>
                         </div>
                     </div>
+                   
                 </Card>
             </Link>
         </Box>

@@ -5,6 +5,8 @@ import reportWebVitals from './reportWebVitals';
 import { MantineThemeOverride, MantineProvider } from '@mantine/core';
 import MantimeColourProvider from './theme/themeProvider';
 import theme from './theme/theme';
+import { Provider } from 'react-redux';
+import { store } from './state/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +15,9 @@ root.render(
   <React.StrictMode>
     <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
       <MantimeColourProvider>
+      <Provider  store={store}>
         <App />
+        </Provider>
       </MantimeColourProvider>
     </MantineProvider>
   </React.StrictMode>
