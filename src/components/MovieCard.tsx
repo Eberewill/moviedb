@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../state/hooks';
 import { MediaItem } from '../models';
 import { img_300, img_500 } from '../utils';
+import GenreBadge from './GenreBadge';
 
 const useStyles = createStyles((theme, _params, getRef) => {
     const image = getRef('image');
@@ -97,14 +98,27 @@ function MovieCard({
     
   const { isLoading} = useAppSelector((state) => state.media);
 
-    const data = {
-       
+    const data : MediaItem = {
+        poster_path ,
+    adult,
+    overview,
+    release_date,
+    genre_ids,
+    id,
+    original_title,
+    original_language,
+    title,
+    backdrop_path,
+    popularity,
+    vote_count,
+    video,
+    vote_average,
     }
 
     return (
         <Box className={classes.cardBox1} p={4}>
             <Link style={{ textDecoration: 'none' }}
-                to={ `/movie`}  state={{ data: data }}>
+                to={ `/movie`}  state={{ data }}>
                     
                 <Card
                     p="lg"
@@ -131,6 +145,11 @@ function MovieCard({
                                 <Text size="sm" className={classes.author}>
                                     {release_date}
                                 </Text>
+<Group>
+{genre_ids && genre_ids.map((_) => (
+              <GenreBadge id={_} variant={'outline'} />
+            ))}
+</Group>
 
                                 <Group spacing="lg">
                                 <Center>
