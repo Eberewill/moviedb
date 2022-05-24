@@ -149,7 +149,7 @@ function MovieCard({
                            </Text>
                            <Group>
                                {genre_ids && genre_ids.map((_) => (
-                                   <GenreBadge id={_} variant={'outline'} />
+                                   <GenreBadge id={_} key={_} variant={'outline'} />
                                ))}
                            </Group>
 

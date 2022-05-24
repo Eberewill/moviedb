@@ -3,13 +3,13 @@ import React from 'react'
 import { X } from 'tabler-icons-react';
 import { addFilter, removeFilter } from '../state/features/media/mediaSlice';
 import { useAppDispatch, useAppSelector } from '../state/hooks'
-import { findGenre, genreList } from '../utils'
+import { findGenre } from '../utils'
 
 
 const FilterBox = () => {
     
     const disPatch = useAppDispatch()
-    const { page, filterGenre ,isSearch, genreListItems, pageGenre} = useAppSelector((state) => state.media);
+    const {  filterGenre , genreListItems} = useAppSelector((state) => state.media);
   
     const removeButton = (id: number) => (
         <ActionIcon onClick={()=>disPatch(removeFilter(id)) }  size="xs" color="blue" radius="xl" variant="transparent">
@@ -30,8 +30,8 @@ const FilterBox = () => {
       ))
     }
       
-      { pageGenre.map((_)=>(
-           <Badge style={{cursor: 'pointer'}} key={`${_}key${Math.random}`} onClick={(()=> disPatch(addFilter(_))) } size='xs'  variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }}>     {findGenre(_)}</Badge>
+      { genreListItems.map((_)=>(
+           <Badge style={{cursor: 'pointer'}} key={`${_.id}key${Math.random}`} onClick={(()=> disPatch(addFilter(_.id))) } size='xs'  variant="gradient" gradient={{ from: 'teal', to: 'blue', deg: 60 }}>{  findGenre(_.id)}</Badge>
 
       ))
       }
