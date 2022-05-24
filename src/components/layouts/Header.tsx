@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { createStyles, Header, Container, Group, Burger, Paper, Transition , Image} from '@mantine/core';
+import { createStyles, Header, Container, Group, Burger, Paper, Transition , Image, Box, Text} from '@mantine/core';
 import { useBooleanToggle } from '@mantine/hooks';
 import ColorSwitcher from './ColorSwitcher';
+import { genreList } from '../../utils';
+import Select from 'react-dropdown-select';
 
 const HEADER_HEIGHT = 60;
 
@@ -86,6 +88,8 @@ export default function HeaderResponsive() {
   const { classes, cx } = useStyles();
 
 
+  
+  
 
   return (
     <Header height={HEADER_HEIGHT} mb={20} className={classes.root}>
@@ -93,7 +97,8 @@ export default function HeaderResponsive() {
        {/** <MantineLogo />*/ }
        <Image width={'40px'} src='https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg'/>
 
-        <ColorSwitcher/>
+
+       <ColorSwitcher/>
         <Burger
           opened={opened}
           onClick={() => toggleOpened()}

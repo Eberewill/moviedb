@@ -23,3 +23,14 @@ export interface ResponseInterface {
     page: number | undefined
 
 }
+
+export interface searchInterface{
+    keyWord: string,
+    searchType: string,
+    page : number 
+}
+
+export interface GenreInterface{
+    id: number,
+    name: string
+}
