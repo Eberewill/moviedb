@@ -6,26 +6,27 @@ import FilterBox from '../components/FilterBox'
 import DefaultPagination from '../components/layouts/DefaultPagination'
 import MovieCard from '../components/MovieCard'
 import { SearchBox } from '../components/SearchBox'
-import { addFilter, removeFilter, fetchTrendingMedia, setGenres, setPage } from '../state/features/media/mediaSlice'
+import {  fetchTrendingMedia, setGenres, setPage } from '../state/features/media/mediaSlice'
 import { useAppDispatch, useAppSelector } from '../state/hooks'
 
 
 const Home = () => {
   const dispatch = useAppDispatch()
-  const { page, total_pages, isSearch, filterGenre, isLoading, mediaItems } = useAppSelector((state) => state.media);
+  const { page, total_pages, isSearch,  isLoading, mediaItems } = useAppSelector((state) => state.media);
 
-
+  const [showTags, setShowTags] = useState(false)
   useEffect(() => {
     window.scroll(0, 0);
     if (page && !isSearch) {
       dispatch(fetchTrendingMedia(page))
-      dispatch(setGenres())
-
     }
   }, [dispatch, page, isSearch])
 
+  useEffect(() => {
+   dispatch(setGenres())
+  }, [dispatch])
+  
 
-  const [showTags, setShowTags] = useState(false)
 
 
   return (
@@ -35,7 +36,7 @@ const Home = () => {
       <Container>
         {!isLoading && showTags && <FilterBox />}
 
-        <Group style={{ color: 'grey' }}> <Eye style={{ cursor: 'pointer' }} onClick={() => setShowTags(!showTags)} />{showTags ? 'Genre display for only page content' : "Show Genre"}</Group>
+        <Group style={{ color: 'grey' }}> <Eye style={{ cursor: 'pointer' }} onClick={() => setShowTags(!showTags)} />{showTags ? 'Hide Genre' : "Show Genre"}</Group>
 
 
 

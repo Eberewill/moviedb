@@ -13,29 +13,24 @@ export function SearchBox() {
 
   const [keyWord, setSearch] = useState('')
   const [searchType, setsearchType] = useState('')
-  const { isLoading, page } = useAppSelector((state) => state.media)
+  const { isLoading, page , isSearch} = useAppSelector((state) => state.media)
 
 
   const handleSearch = () => {
     console.log(keyWord, searchType)
-
     if (page && (keyWord && searchType)) {
-      
     const searchObj: searchInterface = { keyWord, page, searchType }
       dispatch(searchMedia(searchObj))
-
     }
   }
 
   useEffect(() => {
-    if (page){
-      
+    if (page && isSearch){
     const searchObj: searchInterface = { keyWord, page, searchType }
     dispatch(searchMedia(searchObj))
     }
   }, [page])
   
-
 
   
   return (

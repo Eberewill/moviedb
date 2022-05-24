@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { GenreInterface, MediaItem, searchInterface } from '../../../models';
-import { genreList } from '../../../utils';
+import { findGenre, genreList, isInclusive, onlyUnique } from '../../../utils';
 import mediaService from './services/media.service';
 
 
@@ -17,9 +17,9 @@ interface MediaState extends AsyncState {
     total_results: number | undefined,
     total_pages: number | undefined,
     isSearch: boolean,
-    filterGenre: number[]
+    filterGenre: any[]
     genreListItems: GenreInterface[]
-    pageGenre: any[]
+    
 }
 
 const initialState: MediaState = {
@@ -33,7 +33,7 @@ const initialState: MediaState = {
     isSearch: false,
     filterGenre: [],
     genreListItems: genreList,
-    pageGenre: []
+   
 
 
 }
@@ -77,33 +77,23 @@ export const mediaSlice = createSlice({
         addFilter: (state, action) => {
             if(state.filterGenre.find((_)=> _ == action.payload)) return
             state.filterGenre.push(action.payload)
-            state.genreListItems = state.genreListItems.filter((item)=> item.id !== action.payload)
+            state.genreListItems  = state.genreListItems.filter((item)=> item.id !== action.payload)
+            state.mediaItems = state.mediaItems?.map(result=>{
+                result.genre_ids = result.genre_ids.filter(id=>(state.filterGenre.includes(id)))
+                return result
+              })
+           
+        },
+        removeFilter: (state, action) => {
+            state.filterGenre =  state.filterGenre.filter((genre => genre !== action.payload))
+            state.genreListItems.push({ id: action.payload , name:  't' })
             state.mediaItems = state.mediaItems?.map(result=>{
                 result.genre_ids = result.genre_ids.filter(id=>(state.filterGenre.includes(id)))
                 return result
               })
         },
-        removeFilter: (state, action) => {
-            state.filterGenre =  state.filterGenre.filter((genre => genre !== action.payload))
-            state.mediaItems =   state.mediaItems?.map(result=>{
-                result.genre_ids = result.genre_ids.filter(id=>(state.filterGenre.includes(id)))
-                return result
-              })
-        },
         setGenres: (state) => {
-            if(state.mediaItems !== undefined){
-                const genteArray: any[] = []
-           // for(let x: number =0 ; x <= state.mediaItems.length; x++  ){
-            state.mediaItems?.forEach(element => {
-                genteArray.push(element.genre_ids)
-            })
-
-            state.pageGenre = genteArray.flat()
-            
-      //  console.log('*********',genteArray )
-            
-        }
-                     
+            state.genreListItems = state.genreListItems.filter((v,i,a)=>a.findIndex(v2=>(v.id === v2.id && v.name ===v2.name))===i)         
         }
     },
 

@@ -14,7 +14,7 @@ import {
   Stack,
   Divider
 } from '@mantine/core';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, Link } from "react-router-dom";
 import { Line, ArrowLeft, Star, StarHalf, ThumbUp, CalendarTime, Video, Settings } from 'tabler-icons-react';
 import GenreBadge from '../components/GenreBadge';
@@ -124,6 +124,11 @@ const useStyles = createStyles((theme) => {
 
 const MovieItem = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, [])
+  
   const { data: {
     poster_path,
     adult,
@@ -159,7 +164,7 @@ const MovieItem = () => {
 
           <Box className={classes.form} >
             {genre_ids && genre_ids.map((_) => (
-              <GenreBadge id={_} variant={'gradient'} />
+              <GenreBadge id={_} key={_} variant={'gradient'} />
             ))}
             <Text
               mt={5}
