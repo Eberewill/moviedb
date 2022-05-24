@@ -15,9 +15,6 @@ const fetchMediaContents = async (page ?: number): Promise<ResponseInterface | n
     return data
   };
 
-
-
-
   const mediaService =  {
       fetchMediaContents,
       searchMediaContents

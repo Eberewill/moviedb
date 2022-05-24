@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { MediaItem, searchInterface } from '../../../models';
+import { GenreInterface, MediaItem, searchInterface } from '../../../models';
+import { genreList } from '../../../utils';
 import mediaService from './services/media.service';
 
 
@@ -7,6 +8,7 @@ interface AsyncState {
     isLoading: boolean,
     isError: boolean,
     isSuccess: boolean,
+    
 }
 
 interface MediaState extends AsyncState {
@@ -14,7 +16,10 @@ interface MediaState extends AsyncState {
     page: number | undefined,
     total_results: number | undefined,
     total_pages: number | undefined,
-    isSearch: boolean
+    isSearch: boolean,
+    filterGenre: number[]
+    genreListItems: GenreInterface[]
+    pageGenre: any[]
 }
 
 const initialState: MediaState = {
@@ -25,7 +30,12 @@ const initialState: MediaState = {
     page: 1,
     total_results: undefined,
     total_pages: undefined,
-    isSearch: false
+    isSearch: false,
+    filterGenre: [],
+    genreListItems: genreList,
+    pageGenre: []
+
+
 }
 
 
@@ -63,6 +73,37 @@ export const mediaSlice = createSlice({
     reducers: {
         setPage: (state, action) => {
             state.page = action.payload
+        },
+        addFilter: (state, action) => {
+            if(state.filterGenre.find((_)=> _ == action.payload)) return
+            state.filterGenre.push(action.payload)
+            state.genreListItems = state.genreListItems.filter((item)=> item.id !== action.payload)
+            state.mediaItems = state.mediaItems?.map(result=>{
+                result.genre_ids = result.genre_ids.filter(id=>(state.filterGenre.includes(id)))
+                return result
+              })
+        },
+        removeFilter: (state, action) => {
+            state.filterGenre =  state.filterGenre.filter((genre => genre !== action.payload))
+            state.mediaItems =   state.mediaItems?.map(result=>{
+                result.genre_ids = result.genre_ids.filter(id=>(state.filterGenre.includes(id)))
+                return result
+              })
+        },
+        setGenres: (state) => {
+            if(state.mediaItems !== undefined){
+                const genteArray: any[] = []
+           // for(let x: number =0 ; x <= state.mediaItems.length; x++  ){
+            state.mediaItems?.forEach(element => {
+                genteArray.push(element.genre_ids)
+            })
+
+            state.pageGenre = genteArray.flat()
+            
+      //  console.log('*********',genteArray )
+            
+        }
+                     
         }
     },
 
@@ -104,6 +145,6 @@ export const mediaSlice = createSlice({
     }
 })
 
-export const { setPage} = mediaSlice.actions
+export const { setPage , addFilter, removeFilter, setGenres} = mediaSlice.actions
 
 export default mediaSlice.reducer

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Eye, MessageCircle, Search , ThumbUp , StarHalf, Star} from 'tabler-icons-react';
+import { Eye, MessageCircle, Search, ThumbUp, StarHalf, Star } from 'tabler-icons-react';
 import { Card, Box, Text, Group, Center, createStyles, Skeleton } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../state/hooks';
@@ -77,7 +77,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 
 function MovieCard({
-    poster_path ,
+    poster_path,
     adult,
     overview,
     release_date,
@@ -91,92 +91,96 @@ function MovieCard({
     vote_count,
     video,
     vote_average,
-    
+
 }: MediaItem) {
 
     const { classes, theme } = useStyles();
-    
-  const { isLoading} = useAppSelector((state) => state.media);
 
-    const data : MediaItem = {
-        poster_path ,
-    adult,
-    overview,
-    release_date,
-    genre_ids,
-    id,
-    original_title,
-    original_language,
-    title,
-    backdrop_path,
-    popularity,
-    vote_count,
-    video,
-    vote_average,
+    const { isLoading, mediaItems } = useAppSelector((state) => state.media);
+
+    const data: MediaItem = {
+        poster_path,
+        adult,
+        overview,
+        release_date,
+        genre_ids,
+        id,
+        original_title,
+        original_language,
+        title,
+        backdrop_path,
+        popularity,
+        vote_count,
+        video,
+        vote_average,
     }
 
     return (
         <Box className={classes.cardBox1} p={4}>
-            <Link style={{ textDecoration: 'none' }}
-                to={ `/movie`}  state={{ data }}>
-                    
-                <Card
-                    p="lg"
-                    shadow="lg"
-                    className={classes.card}
-                    radius="md"
+           {isLoading || !mediaItems ? <Skeleton height={380} visible={isLoading}> </Skeleton>:
+           
+           <Link style={{ textDecoration: 'none' }}
+           to={`/movie`} state={{ data }}>
 
-                >
-                    <Skeleton  visible={isLoading}> </Skeleton>
-                    <div className={classes.image} style={{ backgroundImage: `url(${img_500 +poster_path})` }} />
-                    <div className={classes.overlay} />
+           <Card
+               p="lg"
+               shadow="lg"
+               className={classes.card}
+               radius="md"
 
-                    <div className={classes.content}>
-                        <div>
-                            <Text size="lg" className={classes.title} weight={500}>
-                                {title}
-                            </Text>
-                            
-                            <Text size="xs" className={classes.title} weight={500}>
-                                {original_title}
-                            </Text>
+           >
+               
+               <div className={classes.image} style={{ backgroundImage: `url(${img_500 + poster_path})` }} />
+               <div className={classes.overlay} />
 
-                            <Group position="apart" spacing="xs">
-                                <Text size="sm" className={classes.author}>
-                                    {release_date}
-                                </Text>
-<Group>
-{genre_ids && genre_ids.map((_) => (
-              <GenreBadge id={_} variant={'outline'} />
-            ))}
-</Group>
+               <div className={classes.content}>
+                   <div>
+                       <Text size="lg" className={classes.title} weight={500}>
+                           {title}
+                       </Text>
 
-                                <Group spacing="lg">
-                                <Center>
-                                        <Star size={16} color={theme.colors.dark[2]} />
-                                        <Text size="sm" className={classes.bodyText}>
-                                            {popularity}
-                                        </Text>
-                                    </Center>
-                                    <Center>
-                                        <StarHalf size={16} color={theme.colors.dark[2]} />
-                                        <Text size="sm" className={classes.bodyText}>
-                                            {vote_average}
-                                        </Text>
-                                    </Center>
-                                    <Center>
-                                        <ThumbUp size={16} color={theme.colors.dark[2]} />
-                                        <Text size="sm" className={classes.bodyText}>
-                                            {vote_count}
-                                        </Text>
-                                    </Center>
-                                </Group>
-                            </Group>
-                        </div>
-                    </div>
-                   
-                </Card>
-            </Link>
+                       <Text size="xs" className={classes.title} weight={500}>
+                           {original_title}
+                       </Text>
+
+                       <Group position="apart" spacing="xs">
+                           <Text size="sm" className={classes.author}>
+                               {release_date}
+                           </Text>
+                           <Group>
+                               {genre_ids && genre_ids.map((_) => (
+                                   <GenreBadge id={_} variant={'outline'} />
+                               ))}
+                           </Group>
+
+                           <Group spacing="lg">
+                               <Center>
+                                   <Star size={16} color={theme.colors.dark[2]} />
+                                   <Text size="sm" className={classes.bodyText}>
+                                       {popularity}
+                                   </Text>
+                               </Center>
+                               <Center>
+                                   <StarHalf size={16} color={theme.colors.dark[2]} />
+                                   <Text size="sm" className={classes.bodyText}>
+                                       {vote_average}
+                                   </Text>
+                               </Center>
+                               <Center>
+                                   <ThumbUp size={16} color={theme.colors.dark[2]} />
+                                   <Text size="sm" className={classes.bodyText}>
+                                       {vote_count}
+                                   </Text>
+                               </Center>
+                           </Group>
+                       </Group>
+                   </div>
+               </div>
+
+           </Card>
+       </Link>
+        }
+           
         </Box>
     )
 }

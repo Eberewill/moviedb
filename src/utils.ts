@@ -6,6 +6,12 @@ export const unavailable =
   "https://www.movienewz.com/img/films/poster-holder.jpg";
 
 
+  export function findGenre (id: number){
+      const genre = genreList.find((_)=> _.id == id)
+      return genre?.name
+  }
+
+
 export const genreList = 
      [
         {

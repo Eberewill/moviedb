@@ -29,3 +29,8 @@ export interface searchInterface{
     searchType: string,
     page : number 
 }
+
+export interface GenreInterface{
+    id: number,
+    name: string
+}
